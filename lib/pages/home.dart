@@ -19,7 +19,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<CategoryModel> categories = [];
-  int activeIndex = 0;
   late Future<List<Article>> futureArticles;
   late Future<List<SliderModel>> sliderList;
 
@@ -29,10 +28,6 @@ class _HomeState extends State<Home> {
     categories = getCategories();
     futureArticles = fetchArticles();
     sliderList = fetchSliderData();
-  }
-
-  void updateActiveIndex(int index) {
-      activeIndex = index;
   }
 
   @override
@@ -105,7 +100,6 @@ class _HomeState extends State<Home> {
             ),
             BreakingNewsSliderWidget(
               breakingArticles: sliderList.then((articles) => articles.take(5).toList()),
-              activeIndex: activeIndex,
             ),
             const SizedBox(height: 10),
             Container(

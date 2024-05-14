@@ -5,21 +5,25 @@ import 'package:news_app/pages/article_view.dart';
 import 'package:news_app/widgets/slider_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-// ignore: must_be_immutable
-class BreakingNewsSliderWidget extends StatelessWidget {
-  BreakingNewsSliderWidget({
+class BreakingNewsSliderWidget extends StatefulWidget {
+  final Future<List<SliderModel>> breakingArticles;
+
+  const BreakingNewsSliderWidget({
     super.key,
     required this.breakingArticles,
-    required this.activeIndex,
   });
 
-  final Future<List<SliderModel>> breakingArticles;
-  int activeIndex;
+  @override
+  _BreakingNewsSliderWidgetState createState() => _BreakingNewsSliderWidgetState();
+}
+
+class _BreakingNewsSliderWidgetState extends State<BreakingNewsSliderWidget> {
+  int activeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<SliderModel>>(
-      future: breakingArticles,
+      future: widget.breakingArticles,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -42,7 +46,7 @@ class BreakingNewsSliderWidget extends StatelessWidget {
                         ),
                       );
                     },
-                    child:  SliderItemImage(sliderItem: sliderItem)
+                    child: SliderItemImage(sliderItem: sliderItem),
                   );
                 },
                 options: CarouselOptions(
@@ -55,7 +59,9 @@ class BreakingNewsSliderWidget extends StatelessWidget {
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   viewportFraction: 0.8,
                   onPageChanged: (index, reason) {
-                    activeIndex = index;
+                    setState(() {
+                      activeIndex = index;
+                    });
                   },
                 ),
               ),
