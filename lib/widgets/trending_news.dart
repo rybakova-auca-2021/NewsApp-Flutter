@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/model/article_model.dart';
 import 'package:news_app/pages/article_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class TrendingNewsWidget extends StatelessWidget {
   const TrendingNewsWidget({
@@ -51,18 +52,22 @@ class TrendingNewsWidget extends StatelessWidget {
                             width: double.infinity,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                article.urlToImage ?? '',
+                              child: CachedNetworkImage(
+                                imageUrl: article.urlToImage ?? '',
                                 height: 120,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'images/placeholder.png',
-                                    height: 120,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
+                                placeholder: (context, url) => Image.asset(
+                                  'images/placeholder.png',
+                                  height: 120,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                                errorWidget: (context, url, error) => Image.asset(
+                                  'images/placeholder.png',
+                                  height: 120,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
